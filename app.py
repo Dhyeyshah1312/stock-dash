@@ -24,11 +24,15 @@ app.layout = html.Div(className="container", children=[
             id="stock-input",
             type="text",
             placeholder="Enter stock code",
-            value="",
-            style={"width": "100%", "padding": "10px"}
+            style={
+                "color": "black",
+                "backgroundColor": "white",
+                "padding": "10px",
+                "width": "100%"
+            }
         ),
 
-        html.Button("Submit", id="submit-btn", n_clicks=0),
+        html.Button("Submit", id="submit-btn"),
 
         html.Br(),
         html.Br(),
@@ -40,8 +44,8 @@ app.layout = html.Div(className="container", children=[
         html.Br(),
         html.Br(),
 
-        html.Button("Stock Price", id="price-btn", n_clicks=0),
-        html.Button("Indicators", id="indicator-btn", n_clicks=0),
+        html.Button("Stock Price", id="price-btn"),
+        html.Button("Indicators", id="indicator-btn"),
 
         html.Br(),
         html.Br(),
@@ -50,10 +54,15 @@ app.layout = html.Div(className="container", children=[
             id="days-input",
             type="number",
             placeholder="number of days",
-            value=10
+            style={
+                "color": "black",
+                "backgroundColor": "white",
+                "padding": "10px",
+                "width": "100%"
+            }
         ),
 
-        html.Button("Forecast", id="forecast-btn", n_clicks=0)
+        html.Button("Forecast", id="forecast-btn")
 
     ]),
 
@@ -80,9 +89,9 @@ app.layout = html.Div(className="container", children=[
     Input("submit-btn", "n_clicks"),
     State("stock-input", "value")
 )
-def update_company(n, stock):
+def update_company(n_clicks, stock):
 
-    if n == 0:
+    if not stock:
         return ""
 
     try:
@@ -109,9 +118,9 @@ def update_company(n, stock):
     State("date-picker", "start_date"),
     State("date-picker", "end_date")
 )
-def update_price(n, stock, start, end):
+def update_price(n_clicks, stock, start, end):
 
-    if n == 0:
+    if not stock:
         return go.Figure()
 
     df = yf.download(stock, start=start, end=end)
@@ -122,7 +131,7 @@ def update_price(n, stock, start, end):
         df,
         x="Date",
         y=["Open", "Close"],
-        title="Stock Prices"
+        title="Stock Price"
     )
 
     return fig
@@ -136,9 +145,9 @@ def update_price(n, stock, start, end):
     State("date-picker", "start_date"),
     State("date-picker", "end_date")
 )
-def update_indicator(n, stock, start, end):
+def update_indicator(n_clicks, stock, start, end):
 
-    if n == 0:
+    if not stock:
         return go.Figure()
 
     df = yf.download(stock, start=start, end=end)
@@ -157,16 +166,16 @@ def update_indicator(n, stock, start, end):
     return fig
 
 
-# FORECAST
+# FORECAST GRAPH
 @app.callback(
     Output("forecast-graph", "figure"),
     Input("forecast-btn", "n_clicks"),
     State("stock-input", "value"),
     State("days-input", "value")
 )
-def forecast(n, stock, days):
+def forecast(n_clicks, stock, days):
 
-    if n == 0:
+    if not stock or not days:
         return go.Figure()
 
     df, preds = predict_stock(stock, days)
@@ -176,6 +185,7 @@ def forecast(n, stock, days):
     fig.add_trace(go.Scatter(
         x=df.index,
         y=df["Close"],
+        mode="lines",
         name="Actual"
     ))
 
@@ -184,6 +194,7 @@ def forecast(n, stock, days):
     fig.add_trace(go.Scatter(
         x=future_dates,
         y=preds,
+        mode="lines",
         name="Forecast"
     ))
 
@@ -191,4 +202,4 @@ def forecast(n, stock, days):
 
 
 if __name__ == "__main__":
-    app.run_server(debug=True)
+    app.run(debug=True)
