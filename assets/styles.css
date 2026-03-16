@@ -43,3 +43,18 @@ background:#ffe94a;
 .js-plotly-plot{
 margin-top:20px;
 }
+
+/* FIX DATE PICKER */
+.DateInput_input {
+color:black !important;
+background:white !important;
+}
+
+.DateInput {
+background:white !important;
+}
+
+.DateRangePickerInput {
+background:white !important;
+border-radius:4px;
+}
