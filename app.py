@@ -1,25 +1,25 @@
 import dash
 from dash import dcc, html
+from dash.dependencies import Input, Output, State
 import yfinance as yf
 import pandas as pd
 import plotly.express as px
-from dash.dependencies import Input, Output, State
+import plotly.graph_objs as go
 
-# ML Model import
-from model import forecast_stock
+from model import predict_stock
 
-# ---------------- APP SETUP ----------------
 app = dash.Dash(__name__)
 server = app.server
 
-# ---------------- LAYOUT ----------------
 app.layout = html.Div(className="container", children=[
 
-    # -------- LEFT PANEL --------
+    # LEFT SIDE
     html.Div(className="inputs", children=[
+
         html.H2("Welcome to the Stock Dash App!"),
 
         html.Label("Input stock code:"),
+
         dcc.Input(
             id="stock-input",
             type="text",
@@ -47,71 +47,54 @@ app.layout = html.Div(className="container", children=[
             placeholder="number of days"
         ),
 
-        html.Button("Forecast", id="forecast-btn"),
+        html.Button("Forecast", id="forecast-btn")
+
     ]),
 
-    # -------- RIGHT PANEL --------
-    html.Div(className="content", children=[
+    # RIGHT SIDE
+    html.Div(className="outputs", children=[
+
         html.H2("Output Area"),
 
         html.Div(id="company-info"),
+
         dcc.Graph(id="price-graph"),
         dcc.Graph(id="indicator-graph"),
-        dcc.Graph(id="forecast-graph"),
+        dcc.Graph(id="forecast-graph")
+
     ])
+
 ])
 
-# ---------------- HELPER FUNCTIONS ----------------
 
-def get_stock_price_fig(df):
-    fig = px.line(
-        df,
-        x="Date",
-        y=["Open", "Close"],
-        title="Opening vs Closing Price"
-    )
-    return fig
-
-
-def get_indicator_fig(df):
-    df["EMA_20"] = df["Close"].ewm(span=20, adjust=False).mean()
-
-    fig = px.line(
-        df,
-        x="Date",
-        y="EMA_20",
-        title="20-Day Exponential Moving Average"
-    )
-    return fig
-
-
-# ---------------- CALLBACKS ----------------
-
-# Company Info Callback
+# COMPANY INFO CALLBACK
 @app.callback(
     Output("company-info", "children"),
     Input("submit-btn", "n_clicks"),
     State("stock-input", "value")
 )
-def update_company_info(n, stock):
-    if not n or not stock:
-        return "Enter stock code and click Submit"
+def update_company(n_clicks, val):
 
-    ticker = yf.Ticker(stock)
-    info = ticker.info
+    if not val:
+        return "Enter stock code"
 
-    name = info.get("shortName", "N/A")
-    summary = info.get("longBusinessSummary", "No description available")
-    logo = info.get("logo_url", "")
+    try:
+        ticker = yf.Ticker(val)
+        info = ticker.info
 
-    return html.Div([
-        html.H3(name),
-        html.Img(src=logo, style={"height": "60px"}) if logo else None,
-        html.P(summary)
-    ])
+        name = info.get("shortName", "N/A")
+        summary = info.get("longBusinessSummary", "No description available")
+
+        return html.Div([
+            html.H3(name),
+            html.P(summary)
+        ])
+
+    except:
+        return "Invalid stock code"
 
 
-# Stock Price Graph Callback
+# STOCK PRICE GRAPH
 @app.callback(
     Output("price-graph", "figure"),
     Input("price-btn", "n_clicks"),
@@ -119,17 +102,26 @@ def update_company_info(n, stock):
     State("date-picker", "start_date"),
     State("date-picker", "end_date")
 )
-def update_price_graph(n, stock, start, end):
-    if not n or not stock or not start or not end:
-        return {}
+def update_price(n_clicks, stock, start, end):
+
+    if not stock:
+        return go.Figure()
 
     df = yf.download(stock, start=start, end=end)
+
     df.reset_index(inplace=True)
 
-    return get_stock_price_fig(df)
+    fig = px.line(
+        df,
+        x="Date",
+        y=["Open", "Close"],
+        title="Closing and Opening Price vs Date"
+    )
+
+    return fig
 
 
-# Indicator Graph Callback
+# INDICATOR GRAPH
 @app.callback(
     Output("indicator-graph", "figure"),
     Input("indicator-btn", "n_clicks"),
@@ -137,30 +129,61 @@ def update_price_graph(n, stock, start, end):
     State("date-picker", "start_date"),
     State("date-picker", "end_date")
 )
-def update_indicator_graph(n, stock, start, end):
-    if not n or not stock or not start or not end:
-        return {}
+def update_indicator(n_clicks, stock, start, end):
+
+    if not stock:
+        return go.Figure()
 
     df = yf.download(stock, start=start, end=end)
+
     df.reset_index(inplace=True)
 
-    return get_indicator_fig(df)
+    df["EMA_20"] = df["Close"].ewm(span=20, adjust=False).mean()
+
+    fig = px.line(
+        df,
+        x="Date",
+        y=["Close", "EMA_20"],
+        title="Exponential Moving Average"
+    )
+
+    return fig
 
 
-# Forecast Graph Callback (ML Model)
+# FORECAST GRAPH
 @app.callback(
     Output("forecast-graph", "figure"),
     Input("forecast-btn", "n_clicks"),
     State("stock-input", "value"),
     State("days-input", "value")
 )
-def update_forecast(n, stock, days):
-    if not n or not stock or not days:
-        return {}
+def forecast(n_clicks, stock, days):
 
-    return forecast_stock(stock, days)
+    if not stock or not days:
+        return go.Figure()
+
+    df, preds = predict_stock(stock, days)
+
+    fig = go.Figure()
+
+    fig.add_trace(go.Scatter(
+        x=df.index,
+        y=df["Close"],
+        mode="lines",
+        name="Actual"
+    ))
+
+    future_dates = pd.date_range(df.index[-1], periods=days+1)[1:]
+
+    fig.add_trace(go.Scatter(
+        x=future_dates,
+        y=preds,
+        mode="lines",
+        name="Forecast"
+    ))
+
+    return fig
 
 
-# ---------------- RUN SERVER ----------------
 if __name__ == "__main__":
-    app.run(debug=True)   
+    app.run_server(debug=True)

@@ -1,74 +1,57 @@
-/* Reset */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: "Roboto", sans-serif;
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family: Arial;
 }
 
-/* Layout */
-.container {
-  display: flex;
-  min-height: 100vh;
+.container{
+display:flex;
+height:100vh;
 }
 
 /* LEFT PANEL */
-.inputs {
-  width: 25vw;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: flex-start;   /* ← LEFT ALIGN */
-  padding: 25px;
-  background-color: rgb(5, 107, 107);
-  color: white;
+
+.inputs{
+width:300px;
+background-color:#0e6f6b;
+padding:20px;
+display:flex;
+flex-direction:column;
+gap:15px;
+color:white;
 }
 
-/* Section spacing */
-.inputs > div {
-  margin: 14px 0;
-  width: 100%;
+/* INPUT BOX */
+
+input{
+padding:10px;
+border:none;
+border-radius:4px;
+width:100%;
+pointer-events:auto;
 }
 
-/* Welcome text */
-.start {
-  font-size: 18px;
-  margin-bottom: 20px;
-  width: 100%;
+/* BUTTONS */
+
+button{
+padding:10px;
+background:#f7df1e;
+border:none;
+border-radius:4px;
+cursor:pointer;
+font-weight:bold;
 }
 
-/* Input + button row */
-.input-row {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-/* Buttons */
-button {
-  padding: 8px 14px;
-  border: none;
-  cursor: pointer;
-  border-radius: 3px;
-}
-
-/* Button colors */
-#submit-btn {
-  background-color: #f6e300;   /* yellow */
-}
-
-#price-btn, #indicator-btn, #forecast-btn {
-  background-color: #39ff14;   /* neon green */
-}
-
-/* Inputs */
-input {
-  padding: 6px;
+button:hover{
+background:#ffe94a;
 }
 
 /* RIGHT PANEL */
-.content {
-  flex: 1;
-  padding: 25px;
-  background-color: #f5f5f5;
+
+.outputs{
+flex:1;
+padding:20px;
+background:#f4f4f4;
+overflow:auto;
 }
