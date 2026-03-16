@@ -44,17 +44,11 @@ background:#ffe94a;
 margin-top:20px;
 }
 
-/* FIX DATE PICKER */
-.DateInput_input {
+.DateInput_input{
 color:black !important;
 background:white !important;
 }
 
-.DateInput {
+.DateRangePickerInput{
 background:white !important;
-}
-
-.DateRangePickerInput {
-background:white !important;
-border-radius:4px;
 }

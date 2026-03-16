@@ -1,6 +1,5 @@
 import yfinance as yf
 import numpy as np
-import pandas as pd
 from sklearn.svm import SVR
 
 
@@ -8,9 +7,12 @@ def predict_stock(stock, days):
 
     df = yf.download(stock, period="60d")
 
+    if isinstance(df.columns, tuple):
+        df.columns = df.columns.get_level_values(0)
+
     X = np.arange(len(df)).reshape(-1, 1)
 
-    y = df["Close"].values
+    y = df["Close"].values.ravel()
 
     model = SVR(kernel="rbf")
 
