@@ -1,6 +1,5 @@
 import yfinance as yf
 import numpy as np
-import pandas as pd
 from sklearn.svm import SVR
 
 
@@ -8,20 +7,16 @@ def predict_stock(stock, days):
 
     df = yf.download(stock, period="60d")
 
-    df = df[["Close"]]
+    X = np.arange(len(df)).reshape(-1, 1)
 
-    df["Prediction"] = df["Close"].shift(-days)
-
-    X = np.array(df.drop(["Prediction"], axis=1))[:-days]
-
-    y = np.array(df["Prediction"])[:-days]
+    y = df["Close"].values
 
     model = SVR(kernel="rbf")
 
     model.fit(X, y)
 
-    x_forecast = np.array(df.drop(["Prediction"], axis=1))[-days:]
+    future = np.arange(len(df), len(df) + days).reshape(-1, 1)
 
-    predictions = model.predict(x_forecast)
+    preds = model.predict(future)
 
-    return df, predictions
+    return df, preds
