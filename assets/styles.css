@@ -54,21 +54,33 @@ color:black;
 font-size:14px;
 }
 
-/* DATE PICKER FIX */
-
-.DateInput_input{
-background:white !important;
-color:black !important;
-}
+/* DATE PICKER FULL FIX */
 
 .DateRangePickerInput{
 background:white !important;
 color:black !important;
+border-radius:4px;
+}
+
+.DateInput{
+background:white !important;
+}
+
+.DateInput_input{
+background:white !important;
+color:black !important;
+font-weight:bold;
 }
 
 .DateRangePickerInput_arrow{
 color:black !important;
 }
+
+.DateRangePickerInput_clearDates{
+color:black !important;
+}
+
+/* CALENDAR */
 
 .CalendarDay__default{
 color:black !important;
