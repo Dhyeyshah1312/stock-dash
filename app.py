@@ -11,82 +11,82 @@ app = dash.Dash(__name__)
 server = app.server
 
 
-app.layout = html.Div([
+app.layout = html.Div(className="container", children=[
 
-    html.H1(
-        "Stock Forecasting Dashboard",
-        style={
-            "textAlign": "center",
-            "padding": "15px",
-            "backgroundColor": "#111",
-            "color": "white"
-        }
-    ),
+    # LEFT PANEL
+    html.Div(className="inputs", children=[
 
-    html.Div(className="container", children=[
+        html.H2("Welcome to the Stock Dash App!"),
 
-        # LEFT PANEL
-        html.Div(className="inputs", children=[
+        html.Label("Input stock code:"),
 
-            html.H3("Controls"),
+        dcc.Input(
+            id="stock-input",
+            type="text",
+            placeholder="Enter stock code",
+            style={
+                "color": "black",
+                "backgroundColor": "white",
+                "padding": "10px",
+                "width": "100%"
+            }
+        ),
 
-            html.Label("Stock Code"),
+        html.Button("Submit", id="submit-btn"),
 
-            dcc.Input(
-                id="stock-input",
-                type="text",
-                placeholder="Example: AAPL",
-                style={"color": "black", "backgroundColor": "white"}
-            ),
+        html.Br(),
+        html.Br(),
 
-            html.Button("Submit", id="submit-btn"),
+        # DATE PICKER FIXED
+        dcc.DatePickerRange(
+            id="date-picker",
+            style={
+                "backgroundColor": "white",
+                "color": "black",
+                "padding": "5px",
+                "width": "100%"
+            }
+        ),
 
-            html.Br(),
+        html.Br(),
+        html.Br(),
 
-            html.Label("Select Date Range"),
+        html.Button("Stock Price", id="price-btn"),
+        html.Button("Indicators", id="indicator-btn"),
 
-            dcc.DatePickerRange(
-                id="date-picker"
-            ),
+        html.Br(),
+        html.Br(),
 
-            html.Br(),
+        dcc.Input(
+            id="days-input",
+            type="number",
+            placeholder="number of days",
+            style={
+                "color": "black",
+                "backgroundColor": "white",
+                "padding": "10px",
+                "width": "100%"
+            }
+        ),
 
-            html.Button("Stock Price", id="price-btn"),
+        html.Button("Forecast", id="forecast-btn")
 
-            html.Button("Indicators", id="indicator-btn"),
+    ]),
 
-            html.Br(),
+    # RIGHT PANEL
+    html.Div(className="outputs", children=[
 
-            html.Label("Forecast Days"),
+        html.H2("Output Area"),
 
-            dcc.Input(
-                id="days-input",
-                type="text",
-                placeholder="e.g. 20",
-                style={"color": "black", "backgroundColor": "white"}
-            ),
+        html.Div(id="company-info"),
 
-            html.Button("Forecast", id="forecast-btn")
+        dcc.Graph(id="price-graph"),
 
-        ]),
+        dcc.Graph(id="indicator-graph"),
 
-        # RIGHT PANEL
-        html.Div(className="outputs", children=[
-
-            html.H2("Company Information"),
-
-            html.Div(id="company-info", className="company-box"),
-
-            dcc.Graph(id="price-graph"),
-
-            dcc.Graph(id="indicator-graph"),
-
-            dcc.Graph(id="forecast-graph")
-
-        ])
+        dcc.Graph(id="forecast-graph")
 
     ])
-
 ])
 
 

@@ -2,15 +2,13 @@
 margin:0;
 padding:0;
 box-sizing:border-box;
-font-family:Arial, Helvetica, sans-serif;
+font-family: Arial;
 }
 
 .container{
 display:flex;
 min-height:100vh;
 }
-
-/* LEFT PANEL */
 
 .inputs{
 width:280px;
@@ -22,71 +20,12 @@ flex-direction:column;
 gap:15px;
 }
 
-/* RIGHT PANEL */
-
 .outputs{
 flex:1;
-padding:30px;
+padding:25px;
 background:#f4f4f4;
 overflow:auto;
 }
-
-/* COMPANY DESCRIPTION */
-
-.company-box{
-background:white;
-padding:15px;
-border-radius:6px;
-max-height:150px;
-overflow:auto;
-margin-bottom:20px;
-}
-
-/* INPUT FIELDS */
-
-input{
-padding:10px;
-border:none;
-border-radius:4px;
-width:100%;
-background:white;
-color:black;
-font-size:14px;
-}
-
-/* DATE PICKER FULL FIX */
-
-.DateRangePickerInput{
-background:white !important;
-color:black !important;
-border-radius:4px;
-}
-
-.DateInput{
-background:white !important;
-}
-
-.DateInput_input{
-background:white !important;
-color:black !important;
-font-weight:bold;
-}
-
-.DateRangePickerInput_arrow{
-color:black !important;
-}
-
-.DateRangePickerInput_clearDates{
-color:black !important;
-}
-
-/* CALENDAR */
-
-.CalendarDay__default{
-color:black !important;
-}
-
-/* BUTTON STYLE */
 
 button{
 padding:10px;
@@ -101,8 +40,6 @@ button:hover{
 background:#ffe94a;
 }
 
-/* GRAPH SPACING */
-
 .js-plotly-plot{
-margin-top:25px;
+margin-top:20px;
 }
