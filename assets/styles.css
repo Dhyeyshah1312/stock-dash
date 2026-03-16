@@ -10,6 +10,8 @@ display:flex;
 min-height:100vh;
 }
 
+/* LEFT PANEL */
+
 .inputs{
 width:280px;
 background:#0e6f6b;
@@ -20,12 +22,16 @@ flex-direction:column;
 gap:15px;
 }
 
+/* RIGHT PANEL */
+
 .outputs{
 flex:1;
 padding:30px;
 background:#f4f4f4;
 overflow:auto;
 }
+
+/* COMPANY DESCRIPTION */
 
 .company-box{
 background:white;
@@ -35,6 +41,8 @@ max-height:150px;
 overflow:auto;
 margin-bottom:20px;
 }
+
+/* INPUT FIELDS */
 
 input{
 padding:10px;
@@ -46,10 +54,27 @@ color:black;
 font-size:14px;
 }
 
+/* DATE PICKER FIX */
+
 .DateInput_input{
 background:white !important;
 color:black !important;
 }
+
+.DateRangePickerInput{
+background:white !important;
+color:black !important;
+}
+
+.DateRangePickerInput_arrow{
+color:black !important;
+}
+
+.CalendarDay__default{
+color:black !important;
+}
+
+/* BUTTON STYLE */
 
 button{
 padding:10px;
@@ -63,6 +88,8 @@ font-weight:bold;
 button:hover{
 background:#ffe94a;
 }
+
+/* GRAPH SPACING */
 
 .js-plotly-plot{
 margin-top:25px;
