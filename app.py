@@ -37,15 +37,8 @@ app.layout = html.Div(className="container", children=[
         html.Br(),
         html.Br(),
 
-        # DATE PICKER FIXED
         dcc.DatePickerRange(
-            id="date-picker",
-            style={
-                "backgroundColor": "white",
-                "color": "black",
-                "padding": "5px",
-                "width": "100%"
-            }
+            id="date-picker"
         ),
 
         html.Br(),
@@ -184,8 +177,6 @@ def forecast(n_clicks, stock, days):
 
     if not stock or not days:
         return go.Figure()
-
-    days = int(days)
 
     df, preds = predict_stock(stock, days)
 
