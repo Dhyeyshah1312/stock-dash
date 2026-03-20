@@ -12,7 +12,7 @@ min-height:100vh;
 
 .inputs{
 width:280px;
-background:#0e6f6b;
+background: linear-gradient(180deg, #0e6f6b, #094c4a);
 padding:20px;
 color:white;
 display:flex;
@@ -23,7 +23,7 @@ gap:15px;
 .outputs{
 flex:1;
 padding:25px;
-background:#f4f4f4;
+background:#f4f6f8;
 overflow:auto;
 }
 
@@ -31,7 +31,7 @@ button{
 padding:10px;
 background:#f7df1e;
 border:none;
-border-radius:4px;
+border-radius:6px;
 cursor:pointer;
 font-weight:bold;
 }
@@ -42,6 +42,7 @@ background:#ffe94a;
 
 .js-plotly-plot{
 margin-top:20px;
+border-radius:10px;
 }
 
 .DateInput_input{
@@ -51,4 +52,6 @@ background:white !important;
 
 .DateRangePickerInput{
 background:white !important;
+width:100% !important;
+border-radius:5px;
 }
